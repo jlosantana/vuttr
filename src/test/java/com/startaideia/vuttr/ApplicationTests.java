@@ -3,7 +3,6 @@ package com.startaideia.vuttr;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -16,11 +15,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class ApplicationTests {
+
+	private final String BASE_URL = "/tools";
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -42,9 +44,9 @@ class ApplicationTests {
 		newTool.setDescription("test");
 		newTool.setTags(Arrays.asList(new String[] { "test1", "test2" }));
 
-		mockMvc.perform(
-				post("/tools").contentType("application/json").content(objectMapper.writeValueAsString(newTool)))
-				.andExpect(content().contentType("application/json")).andExpect(status().isCreated());
+		mockMvc.perform(post(BASE_URL).header("Origin", "http://localhost:3000")
+				.contentType(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(newTool)))
+				.andExpect(status().isCreated());
 
 	}
 
@@ -58,13 +60,13 @@ class ApplicationTests {
 		newTool.setDescription("test");
 		newTool.setTags(Arrays.asList(new String[] { "test1", "test2" }));
 
-		mockMvc.perform(
-				post("/tools").contentType("application/json").content(objectMapper.writeValueAsString(newTool)))
-				.andExpect(content().contentType("application/json")).andExpect(status().isCreated());
+		mockMvc.perform(post(BASE_URL).header("Origin", "http://localhost:3000")
+				.contentType(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(newTool)))
+				.andExpect(status().isCreated());
 
-		mockMvc.perform(get("/tools").contentType("application/json"))
-				.andExpect(content().contentType("application/json")).andExpect(status().isOk())
-				.andExpect(jsonPath("$.title").value("ListAll"));
+		mockMvc.perform(
+				get(BASE_URL).header("Origin", "http://localhost:3000").contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(status().isOk()).andExpect(jsonPath("$.[0].title").value("ListAll"));
 
 	}
 
@@ -73,22 +75,24 @@ class ApplicationTests {
 
 		Tool newTool = new Tool();
 
-		newTool.setTitle("ListByTag");
+		newTool.setTitle("ListAll");
 		newTool.setLink("test");
 		newTool.setDescription("test");
 		newTool.setTags(Arrays.asList(new String[] { "test1", "test2" }));
 
-		mockMvc.perform(
-				post("/tools").contentType("application/json").content(objectMapper.writeValueAsString(newTool)))
-				.andExpect(content().contentType("application/json")).andExpect(status().isCreated());
+		mockMvc.perform(post(BASE_URL).header("Origin", "http://localhost:3000")
+				.contentType(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(newTool)))
+				.andExpect(status().isCreated());
 
-		mockMvc.perform(get("/tools").contentType("application/json").param("tag", "test1")).andExpect(status().isOk())
-				.andExpect(jsonPath("title").value("ListByTag"));
+		mockMvc.perform(get(BASE_URL).header("Origin", "http://localhost:3000")
+				.contentType(MediaType.APPLICATION_JSON_VALUE).param("tag", "test1")).andExpect(status().isOk())
+				.andExpect(jsonPath("$.[0].title").value("ListAll"));
 
 	}
 
 	@Test
 	void toolDelete() throws Exception {
-		mockMvc.perform(delete("/tools/99").contentType("application/json")).andExpect(status().isNoContent());
+		mockMvc.perform(delete("/tools/99").header("Origin", "http://localhost:3000")
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isNoContent());
 	}
 }
