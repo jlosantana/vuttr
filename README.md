@@ -35,6 +35,6 @@ endpoints
 
     * Spring Boot
     * Spring Data
-    * PostgreSQL Database
+    * HSQL Database
     * Docker
 
