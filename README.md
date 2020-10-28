@@ -1,4 +1,4 @@
-# vuttr
+# vuttr - Very Useful Tool To Remember
 
 base url (API Doc)
 
@@ -8,9 +8,9 @@ endpoints
 
     http://localhost:3000/tools
 
-## Startaideia - desafio back-end
+## description
 
-    Feramenta de repositório para gerenciar ferramentas com seus respectivos nomes, links, descrições e tags.
+    Manager repository for useful tools.
 
 ## build
 
