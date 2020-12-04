@@ -17,7 +17,7 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${docker_image} ."
+                sh "docker build -t jlosantana/vuttr-dev ."
             }
         }
         
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'docker rm -f ${docker_container}'
+                        sh 'docker rm -f vuttr-dev'
                     } catch (e) {}
                 }
             }
@@ -33,7 +33,7 @@ pipeline {
         
         stage('Run Docker Container') {
             steps {
-                sh 'docker run --name ${docker_container} -d -p 3000:3000 ${docker_image}'
+                sh 'docker run --name jlosantana/vuttr-dev -d -p 3000:3000 vuttr-dev'
             }
         }
         
