@@ -33,7 +33,7 @@ pipeline {
         
         stage('Run Docker Container') {
             steps {
-                sh 'docker run --name jlosantana/vuttr-dev -d -p 3000:3000 vuttr-dev'
+                sh 'docker run --name vuttr-dev -d -p 3000:3000 jlosantana/vuttr-dev'
             }
         }
         
